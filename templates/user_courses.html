@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Courses{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="text-center text-primary mb-4 display-4 fw-bold animate__animated animate__fadeInDown">Empower Your Journey: Explore Our Courses</h2>
+            <p class="text-center text-muted mb-5 lead animate__animated animate__fadeIn">Discover a diverse range of programs designed to equip you with the skills and knowledge to thrive in various sectors.</p>
+
+            {# Animated Coming Soon Announcement #}
+            <div class="text-center mt-5 p-5 border rounded-lg shadow-sm bg-light mb-5">
+                <h3 class="display-3 fw-bold text-secondary animate__animated animate__pulse animated-infinite">Coming Soon! ✨</h3>
+                <p class="lead mt-3 text-muted">We're actively working on bringing you these exciting courses. Stay tuned for updates!</p>
+                <p class="mt-4">Below are the course categories we will be offering.</p>
+            </div>
+
+            {# Course Cards Section #}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {# Course Card: Entrepreneurship #}
+                <div class="col animate__animated animate__fadeInUp animate__delay-0-1s">
+                    <div class="card h-100 shadow-lg rounded-lg border-0 transform-on-hover">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title text-dark fw-bold mb-3">Entrepreneurship 🚀</h5>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                Unlock your entrepreneurial potential. Learn to innovate, build, and scale your business from idea to market leadership.
+                            </p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg rounded-pill px-4 shadow-sm">Explore Course</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Course Card: Educational Sector #}
+                <div class="col animate__animated animate__fadeInUp animate__delay-0-2s">
+                    <div class="card h-100 shadow-lg rounded-lg border-0 transform-on-hover">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title text-dark fw-bold mb-3">Educational Sector 📚</h5>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                Equip yourself with modern pedagogical techniques and leadership skills to make a profound impact in education.
+                            </p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg rounded-pill px-4 shadow-sm">Explore Course</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Course Card: Leadership #}
+                <div class="col animate__animated animate__fadeInUp animate__delay-0-3s">
+                    <div class="card h-100 shadow-lg rounded-lg border-0 transform-on-hover">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title text-dark fw-bold mb-3">Leadership 🌟</h5>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                Develop the vision, influence, and resilience needed to lead teams and organizations effectively.
+                            </p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg rounded-pill px-4 shadow-sm">Explore Course</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Course Card: Hospitality #}
+                <div class="col animate__animated animate__fadeInUp animate__delay-0-4s">
+                    <div class="card h-100 shadow-lg rounded-lg border-0 transform-on-hover">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title text-dark fw-bold mb-3">Hospitality 🛎️</h5>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                Master the art of service excellence, hotel operations, and guest relations in the dynamic hospitality industry.
+                            </p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg rounded-pill px-4 shadow-sm">Explore Course</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Course Card: Event Management #}
+                <div class="col animate__animated animate__fadeInUp animate__delay-0-5s">
+                    <div class="card h-100 shadow-lg rounded-lg border-0 transform-on-hover">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title text-dark fw-bold mb-3">Event Management 🎤</h5>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                Plan, execute, and manage memorable events, from corporate conferences to grand celebrations, with expert precision.
+                            </p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg rounded-pill px-4 shadow-sm">Explore Course</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Course Card: Tech #}
+                <div class="col animate__animated animate__fadeInUp animate__delay-0-6s">
+                    <div class="card h-100 shadow-lg rounded-lg border-0 transform-on-hover">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title text-dark fw-bold mb-3">Tech 💻</h5>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                Dive into the world of technology, from coding fundamentals to emerging trends like AI and data science.
+                            </p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg rounded-pill px-4 shadow-sm">Explore Course</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Course Card: Creativity #}
+                <div class="col animate__animated animate__fadeInUp animate__delay-0-7s">
+                    <div class="card h-100 shadow-lg rounded-lg border-0 transform-on-hover">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title text-dark fw-bold mb-3">Creativity 🎨</h5>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                Unleash your artistic flair with courses in photography, videography, graphic design, and captivating content creation.
+                            </p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg rounded-pill px-4 shadow-sm">Explore Course</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Course Card: BE GUTSY (INSPIRATIONAL) #}
+                <div class="col animate__animated animate__fadeInUp animate__delay-0-8s">
+                    <div class="card h-100 shadow-lg rounded-lg border-0 transform-on-hover">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title text-dark fw-bold mb-3">BE GUTSY (Inspirational) ✨</h5>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                Find your inner strength and resilience. This course inspires confidence, self-belief, and the courage to pursue your dreams.
+                            </p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Discover Your Guts</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom styles for animations and card hover effect */
+    .transform-on-hover {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .transform-on-hover:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Standard Animate.css keyframes (assuming it's linked in base.html) */
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Custom pulse animation for "Coming Soon" */
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .animate__fadeInDown {
+        animation: fadeInDown 1s ease-out;
+    }
+
+    .animate__fadeIn {
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* Apply the infinite pulse animation */
+    .animated-infinite {
+        animation: pulse 2s infinite ease-in-out;
+    }
+</style>
+{% endblock %}

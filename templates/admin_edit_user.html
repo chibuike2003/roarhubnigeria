@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User: {{ user.full_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2; /* A modern blue */
+            --secondary-color: #6c757d; /* Standard muted text */
+            --background-color: #f0f2f5; /* Light grey background */
+            --card-background: #ffffff; /* White card background */
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+            --input-border: #ced4da;
+            --input-focus-border: #80bdff;
+            --button-hover-bg: #357ABD;
+            --button-outline-hover-bg: #f8f9fa;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+        }
+
+        .form-card {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow-light);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .card-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid var(--input-border);
+            border-radius: 25px; /* Pill shape */
+            font-size: 1rem;
+            color: var(--text-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box; /* Ensures padding doesn't increase total width */
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25); /* Focus ring */
+            outline: none;
+        }
+
+        textarea.form-control {
+            border-radius: 10px; /* Slightly rounded corners for textarea */
+            resize: vertical;
+            min-height: 90px;
+            padding: 15px 20px;
+        }
+
+        .form-text-small {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-top: 5px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none; /* For the anchor tag button */
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px var(--shadow-light);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--button-hover-bg);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
+
+        .btn-outline-secondary {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: var(--button-outline-hover-bg);
+            color: var(--text-color);
+            border-color: var(--text-color);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: var(--success-color);
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: var(--danger-color);
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: var(--info-color);
+            border: 1px solid #bee5eb;
+        }
+
+        .alert .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: inherit;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 25px;
+            }
+
+            .card-title {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-card">
+        <div class="card-body">
+            <h2 class="card-title">Edit User Account</h2>
+            <p class="subtitle">Editing details for: <strong>{{ user.full_name }} (ID: {{ user.id }})</strong></p>
+
+            {# Flash messages display area #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';" aria-label="Close">&times;</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('admin_edit_user', user_id=user.id) }}" method="POST" enctype="multipart/form-data">
+                <h5 class="section-title">Personal Information</h5>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" class="form-control" id="fullName" name="fullName" value="{{ user.full_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value="{{ user.phone_number }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" class="form-control" id="dob" name="dob" value="{{ user.date_of_birth.strftime('%Y-%m-%d') }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="maritalStatus">Marital Status:</label>
+                    <select class="form-select" id="maritalStatus" name="maritalStatus" required>
+                        <option value="Single" {% if user.marital_status == 'Single' %}selected{% endif %}>Single</option>
+                        <option value="Married" {% if user.marital_status == 'Married' %}selected{% endif %}>Married</option>
+                        <option value="Divorced" {% if user.marital_status == 'Divorced' %}selected{% endif %}>Divorced</option>
+                        <option value="Widowed" {% if user.marital_status == 'Widowed' %}selected{% endif %}>Widowed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="stateOfOrigin">State of Origin:</label>
+                    <input type="text" class="form-control" id="stateOfOrigin" name="stateOfOrigin" value="{{ user.state_of_origin }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="lga">LGA:</label>
+                    <input type="text" class="form-control" id="lga" name="lga" value="{{ user.lga }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="resiAddress">Residential Address:</label>
+                    <textarea class="form-control" id="resiAddress" name="resiAddress" rows="3" required>{{ user.residential_address }}</textarea>
+                </div>
+
+                <hr class="section-divider">
+
+                <h5 class="section-title">Change Password (Optional)</h5>
+                <p class="form-text-small">Leave blank if you don't want to change the password.</p>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword">
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirm New Password:</label>
+                    <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="{{ url_for('admin_manage_users') }}" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

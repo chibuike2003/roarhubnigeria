@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Events</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff; /* Bootstrap primary blue */
+            --secondary-color: #6c757d; /* Muted grey */
+            --success-color: #28a745; /* Green for success/post event */
+            --danger-color: #dc3545; /* Red for delete */
+            --info-color: #17a2b8; /* Blue for info alerts */
+            --background-color: #f8f9fa; /* Light background */
+            --card-background: #ffffff; /* White card background */
+            --text-color: #343a40; /* Dark text */
+            --border-color: #e9ecef; /* Light border */
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+            --input-border: #ced4da;
+            --input-focus-border: #80bdff;
+            --button-hover-bg-primary: #0056b3;
+            --button-hover-bg-success: #218838;
+            --button-outline-hover-bg-danger: #f8d7da;
+            --button-outline-hover-color-danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top for longer content */
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 0; /* Already handled by body padding */
+        }
+
+        .page-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 3.5rem; /* display-4 equivalent */
+            font-weight: 700; /* fw-bold equivalent */
+            margin-bottom: 50px;
+        }
+
+        /* Card for Add New Event Form */
+        .card-add-event {
+            box-shadow: 0 4px 12px var(--shadow-light);
+            border-radius: 12px;
+            overflow: hidden; /* Ensures rounded corners apply to children */
+            margin-bottom: 40px;
+        }
+
+        .card-header-success {
+            background-color: var(--success-color);
+            color: white;
+            padding: 18px 25px;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .card-body-form {
+            padding: 30px 25px;
+            background-color: var(--card-background);
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600; /* fw-bold equivalent */
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid var(--input-border);
+            border-radius: 25px; /* rounded-pill equivalent */
+            font-size: 1rem;
+            color: var(--text-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        textarea.form-control {
+            border-radius: 10px; /* rounded-lg equivalent */
+            resize: vertical;
+            min-height: 120px;
+            padding: 15px 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-col-50 {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            .form-col-50 {
+                width: 100%;
+            }
+        }
+
+        .form-text-muted {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Buttons */
+        .button-grid {
+            display: grid;
+            gap: 15px; /* gap-2 equivalent */
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px; /* rounded-pill equivalent */
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+            box-shadow: 0 4px 10px var(--shadow-light);
+        }
+
+        .btn-success:hover {
+            background-color: var(--button-hover-bg-success);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
+
+        .btn-outline-danger {
+            background-color: transparent;
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
+            box-shadow: none;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: var(--button-outline-hover-bg-danger);
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+            box-shadow: 0 2px 5px rgba(220, 53, 69, 0.2);
+        }
+
+        /* All Posted Events Section */
+        .events-section-title {
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 2.5rem; /* display-5 equivalent */
+            font-weight: 700; /* fw-bold equivalent */
+            margin-top: 50px;
+            margin-bottom: 40px;
+        }
+
+        .event-list-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .event-card {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            overflow: hidden;
+        }
+
+        .event-card-body {
+            padding: 25px;
+        }
+
+        .event-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .event-title {
+            color: var(--text-color);
+            font-weight: 700; /* fw-bold equivalent */
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .event-subtitle {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .event-description {
+            color: var(--secondary-color);
+            line-height: 1.8; /* lh-lg equivalent */
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Media display */
+        .media-section {
+            margin-top: 20px;
+        }
+
+        .media-section-title {
+            color: var(--secondary-color);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px; /* g-3 equivalent */
+        }
+
+        .media-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px var(--shadow-light);
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: 180px; /* Fixed height for media as per original code */
+            object-fit: cover; /* object-cover equivalent */
+            display: block;
+        }
+
+        /* Alert for no events */
+        .alert-info-custom {
+            background-color: #d1ecf1;
+            color: var(--info-color);
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px; /* rounded-lg equivalent */
+            box-shadow: 0 2px 8px var(--shadow-light);
+            margin-top: 50px;
+        }
+
+        .alert-info-custom .alert-heading {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .alert-info-custom p {
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        /* Custom HR style */
+        .section-divider {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="page-title">Manage Events</h2>
+
+    <!-- Add New Event Form -->
+    <div class="card-add-event">
+        <div class="card-header-success">
+            <h4 class="mb-0">Post a New Event</h4>
+        </div>
+        <div class="card-body-form">
+            <form method="POST" action="{{ url_for('admin_post_event') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title" class="form-label">Event Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="form-label">Comments/Notes</label>
+                    <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-col-50 form-group">
+                        <label for="eventDate" class="form-label">Event Date</label>
+                        <input type="date" class="form-control" id="eventDate" name="eventDate" required>
+                    </div>
+                    <div class="form-col-50 form-group">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="location" name="location" placeholder="e.g., Online, City Hall" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="images" class="form-label">Event Pictures (Multiple)</label>
+                    <input type="file" class="form-control" id="images" name="images" accept="image/*" multiple>
+                    <small class="form-text-muted">Allowed formats: png, jpg, jpeg, gif</small>
+                </div>
+                <div class="form-group">
+                    <label for="videos" class="form-label">Event Videos (Multiple)</label>
+                    <input type="file" class="form-control" id="videos" name="videos" accept="video/*" multiple>
+                    <small class="form-text-muted">Allowed formats: mp4, webm, ogg</small>
+                </div>
+                <div class="button-grid">
+                    <button type="submit" class="btn btn-success">Post Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h3 class="events-section-title">All Posted Events</h3>
+
+    {% if all_events %}
+        <div class="event-list-group">
+            {% for event in all_events %}
+            <div class="event-card">
+                <div class="event-card-body">
+                    <div class="event-card-header">
+                        <div>
+                            <h5 class="event-title">{{ event.title }}</h5>
+                            <h6 class="event-subtitle">
+                                {{ event.event_date.strftime('%B %d, %Y') }} at {{ event.location }}
+                            </h6>
+                        </div>
+                        <a href="{{ url_for('admin_delete_event', event_id=event.id) }}"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Are you sure you want to delete this event and all its media?');">
+                            Delete
+                        </a>
+                    </div>
+                    <p class="event-description">{{ event.description }}</p>
+
+                    {% if event.media %}
+                    <div class="media-section">
+                        <h6 class="media-section-title">Media:</h6>
+                        <div class="media-grid">
+                            {% for media in event.media %}
+                                <div class="media-item">
+                                    {% if media.file_type == 'image' %}
+                                        <img src="{{ url_for('static', filename='event_media/' + media.filename) }}"
+                                             alt="Event Image">
+                                    {% elif media.file_type == 'video' %}
+                                        <video controls>
+                                            <source src="{{ url_for('static', filename='event_media/' + media.filename) }}" type="video/{{ media.filename.rsplit('.', 1)[1] }}">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert-info-custom" role="alert">
+            <h4 class="alert-heading">No Events Posted Yet!</h4>
+            <p>Use the form above to add your first event.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

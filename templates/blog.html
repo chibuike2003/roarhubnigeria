@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="mb-4">Community Blog</h2>
+        {% if posts %}
+            {% for post in posts %}
+            <article class="blog-post card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">{{ post.title }}</h3>
+                    <p class="card-subtitle text-muted mb-2">
+                        By {{ post.author.full_name }} on {{ post.date_posted.strftime('%B %d, %Y') }}
+                    </p>
+                    <p class="card-text">{{ post.content[:200] }}...</p>
+                    <a href="{{ url_for('single_post', post_id=post.id) }}" class="btn btn-primary">Read More</a>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                No blog posts have been published yet.
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Share Your Story</h5>
+                <p class="card-text">Have a story or insight to share? Write your own blog post!</p>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('create_blog_post') }}" class="btn btn-secondary w-100">Create Post</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-secondary w-100">Login to Create Post</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

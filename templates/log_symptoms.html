@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Log Symptoms{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Log Your Symptoms</h2>
+                <form action="{{ url_for('log_symptoms') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="logDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="logDate" name="logDate" value="{{ today_date }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mood" class="form-label">Mood</label>
+                        <select class="form-select" id="mood" name="mood">
+                            <option value="" selected>Select...</option>
+                            <option value="Happy">Happy</option>
+                            <option value="Energetic">Energetic</option>
+                            <option value="Calm">Calm</option>
+                            <option value="Irritable">Irritable</option>
+                            <option value="Anxious">Anxious</option>
+                            <option value="Sad">Sad</option>
+                            <option value="Fatigued">Fatigued</option>
+                            <option value="Depressed">Depressed</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="flow" class="form-label">Flow Level</label>
+                        <select class="form-select" id="flow" name="flow">
+                            <option value="" selected>Select...</option>
+                            <option value="Spotting">Spotting</option>
+                            <option value="Light">Light</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Heavy">Heavy</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="painLevel" class="form-label">Pain Level (1-10)</label>
+                        <input type="number" class="form-control" id="painLevel" name="painLevel" min="1" max="10">
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes/Symptoms</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="4"></textarea>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Log Symptoms</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

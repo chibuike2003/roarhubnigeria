@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Success Stories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff; /* A clean blue for titles and links */
+            --secondary-color: #6c757d; /* Muted grey for subheadings and details */
+            --success-color: #28a745; /* Green for approval buttons and success states */
+            --danger-color: #dc3545; /* Red for rejection/deletion buttons and danger states */
+            --warning-color: #ffc107; /* Yellow for pending status */
+            --info-color: #17a2b8; /* Cyan for info alerts */
+            --background-color: #f8f9fa; /* Light grey background for the page */
+            --card-background: #ffffff; /* White background for cards */
+            --text-color: #343a40; /* Dark text for general content */
+            --border-color: #e9ecef; /* Light border color */
+            --shadow-light: rgba(0, 0, 0, 0.05); /* Soft shadow */
+            --shadow-medium: rgba(0, 0, 0, 0.1); /* Medium shadow for hover/focus */
+            --input-border-color: #ced4da; /* Default input border */
+            --input-focus-border-color: #80bdff; /* Input border on focus */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px 20px;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .page-header {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            margin-top: 40px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center; /* Center the section titles */
+        }
+
+        /* Table Styling */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 30px;
+            border-radius: 8px; /* Slightly rounded table corners */
+            box-shadow: 0 2px 8px var(--shadow-light);
+            background-color: var(--card-background);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0; /* Remove default table margin */
+        }
+
+        .custom-table th,
+        .custom-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .custom-table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            border-bottom: none;
+            position: sticky;
+            top: 0;
+        }
+
+        .custom-table tbody tr:nth-child(even) {
+            background-color: var(--background-color); /* Lighter stripe */
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #e2f2ff; /* Light blue on hover */
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            margin-right: 8px; /* Space between buttons */
+            border: 1px solid transparent; /* Default border for consistent sizing */
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            box-shadow: 0 2px 5px rgba(220, 53, 69, 0.2);
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge.bg-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .badge.bg-warning {
+            background-color: var(--warning-color);
+            color: var(--text-color);
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            box-shadow: 0 2px 5px var(--shadow-light);
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: var(--info-color);
+            border: 1px solid #bee5eb;
+        }
+
+        .alert-info .alert-heading {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--info-color);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page-header {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .custom-table th,
+            .custom-table td {
+                padding: 10px 15px;
+            }
+            .btn {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+                margin-right: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+            }
+            .section-title {
+                font-size: 1.3rem;
+                margin-top: 30px;
+                margin-bottom: 20px;
+            }
+            .custom-table th,
+            .custom-table td {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="page-header">Manage Success Stories</h2>
+
+    {% if pending_stories %}
+    <h4 class="section-title">Stories Awaiting Approval</h4>
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Date Submitted</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for story in pending_stories %}
+                <tr>
+                    <td>{{ story.title }}</td>
+                    <td>{{ story.author.full_name }}</td>
+                    <td>{{ story.date_posted.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_approve_story', story_id=story.id) }}" class="btn btn-success">Approve</a>
+                        <a href="{{ url_for('admin_delete_story', story_id=story.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this story?');">Reject</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">No success stories are awaiting approval.</h4>
+        <p>All stories have been reviewed or there are no new submissions.</p>
+    </div>
+    {% endif %}
+
+    <h4 class="section-title">All Approved Stories</h4>
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for story in all_stories %}
+                <tr>
+                    <td>{{ story.title }}</td>
+                    <td>{{ story.author.full_name }}</td>
+                    <td>
+                        {% if story.is_approved %}
+                        <span class="badge bg-success">Approved</span>
+                        {% else %}
+                        <span class="badge bg-warning">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('admin_delete_story', story_id=story.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this story?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Messages</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #343a40;
+            --border-color: #e9ecef;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --info-color: #17a2b8;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .header h1 {
+            font-weight: 600;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message-card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 5px var(--shadow-color);
+        }
+
+        .message-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px var(--shadow-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .timestamp {
+            color: var(--secondary-color);
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+
+        .message-info p {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+        }
+
+        .message-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        .message-info a:hover {
+            text-decoration: underline;
+        }
+
+        .message-body {
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        .no-messages-alert {
+            background-color: #e0f7fa;
+            color: #00796b;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+            border-left: 5px solid var(--info-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Contact Messages</h1>
+    </div>
+
+    {% if contacts %}
+    <div class="message-list">
+        {% for contact in contacts %}
+        <div class="message-card">
+            <div class="card-header">
+                <h3>{{ contact.subject }}</h3>
+                <span class="timestamp">{{ contact.timestamp.strftime('%B %d, %Y at %H:%M') }}</span>
+            </div>
+            <div class="message-info">
+                <p>From: <a href="mailto:{{ contact.email }}">{{ contact.name }}</a></p>
+            </div>
+            <div class="message-body">
+                <p>{{ contact.message }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-messages-alert">
+        No contact messages have been submitted yet.
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

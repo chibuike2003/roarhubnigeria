@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post & Manage Announcements</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff; /* A clean blue for titles, links, and main buttons */
+            --secondary-color: #6c757d; /* Muted grey for subheadings and details */
+            --success-color: #28a745; /* Green for success states */
+            --danger-color: #dc3545; /* Red for deletion buttons and danger states */
+            --info-color: #17a2b8; /* Cyan for info alerts */
+            --background-color: #f8f9fa; /* Light grey background for the page */
+            --card-background: #ffffff; /* White background for cards */
+            --text-color: #343a40; /* Dark text for general content */
+            --border-color: #e9ecef; /* Light border color */
+            --shadow-light: rgba(0, 0, 0, 0.05); /* Soft shadow */
+            --shadow-medium: rgba(0, 0, 0, 0.1); /* Medium shadow for hover/focus */
+            --input-border-color: #ced4da; /* Default input border */
+            --input-focus-border-color: #80bdff; /* Input border on focus */
+            --button-hover-bg-primary: #0056b3;
+            --button-outline-hover-bg-danger: #f8d7da;
+            --button-outline-hover-color-danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px 20px;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px; /* Adjusted max-width for this page */
+        }
+
+        /* Card for Post New Announcement Form */
+        .form-card {
+            background-color: var(--card-background);
+            border-radius: 12px; /* rounded-lg equivalent */
+            box-shadow: 0 8px 20px var(--shadow-light); /* shadow-lg equivalent */
+            padding: 40px; /* p-4 equivalent */
+            margin-bottom: 40px; /* mb-5 equivalent */
+            border: 1px solid var(--border-color); /* Subtle border for definition */
+        }
+
+        .card-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.2rem; /* h2 equivalent with mb-4 */
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .card-subtitle-text {
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Form elements */
+        .form-group { /* Replaces mb-3 and mb-4 for consistency */
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 20px; /* px-4 py-2 equivalent */
+            border: 1px solid var(--input-border-color);
+            border-radius: 25px; /* rounded-pill equivalent */
+            font-size: 1rem;
+            color: var(--text-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        textarea.form-control {
+            border-radius: 10px; /* rounded-lg equivalent */
+            resize: vertical;
+            min-height: 150px; /* Increased height for content area */
+            padding: 15px 20px;
+        }
+
+        /* Buttons */
+        .button-grid { /* d-grid gap-2 equivalent */
+            display: grid;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1rem; /* btn-lg equivalent */
+            font-weight: 600;
+            border: none;
+            border-radius: 25px; /* rounded-pill equivalent */
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px var(--shadow-light); /* shadow-sm equivalent */
+        }
+
+        .btn-primary:hover {
+            background-color: var(--button-hover-bg-primary);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
+
+        /* All Posted Announcements Section */
+        .announcements-section-title {
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 2.5rem; /* display-5 fw-bold equivalent */
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        .announcement-list-group { /* list-group equivalent */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .announcement-card {
+            background-color: var(--card-background);
+            border-radius: 12px; /* rounded-lg equivalent */
+            box-shadow: 0 2px 8px var(--shadow-light); /* shadow-sm equivalent */
+            overflow: hidden;
+            border: 1px solid var(--border-color); /* border-0 equivalent, but adding a subtle border */
+        }
+
+        .announcement-card-body {
+            padding: 25px; /* p-4 equivalent */
+        }
+
+        .announcement-card-header { /* d-flex justify-content-between align-items-start equivalent */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .announcement-title {
+            color: var(--text-color); /* text-dark fw-bold equivalent */
+            font-weight: 700;
+            font-size: 1.4rem; /* h5 equivalent */
+            margin-bottom: 5px;
+        }
+
+        .announcement-subtitle {
+            color: var(--secondary-color); /* text-muted equivalent */
+            font-size: 0.95rem; /* h6 equivalent */
+            margin-bottom: 0; /* mb-2 equivalent */
+        }
+
+        .announcement-content {
+            color: var(--secondary-color); /* text-secondary lh-lg mt-2 equivalent */
+            line-height: 1.8;
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+
+        .btn-outline-danger-sm { /* btn-sm btn-outline-danger equivalent */
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 5px;
+            background-color: transparent;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-outline-danger-sm:hover {
+            background-color: var(--danger-color);
+            color: white;
+            box-shadow: 0 2px 5px rgba(220, 53, 69, 0.2);
+        }
+
+        /* Alert Messages (reused from previous design) */
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            position: relative;
+            box-shadow: 0 2px 5px var(--shadow-light);
+            text-align: center; /* For text-center alerts */
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: var(--success-color);
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: var(--danger-color);
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: var(--info-color);
+            border: 1px solid #bee5eb;
+        }
+
+        .alert .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: inherit;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .alert .btn-close:hover {
+            opacity: 1;
+        }
+
+        .alert-heading { /* For alert-heading inside info alert */
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--info-color);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 25px;
+            }
+            .card-title {
+                font-size: 1.8rem;
+            }
+            .card-subtitle-text {
+                font-size: 0.9rem;
+            }
+            .announcements-section-title {
+                font-size: 1.8rem;
+            }
+            .announcement-card-body {
+                padding: 15px;
+            }
+            .announcement-title {
+                font-size: 1.2rem;
+            }
+            .announcement-subtitle {
+                font-size: 0.85rem;
+            }
+            .announcement-content {
+                font-size: 0.9rem;
+            }
+            .btn {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+            .btn-outline-danger-sm {
+                font-size: 0.75rem;
+                padding: 5px 10px;
+            }
+            .alert {
+                font-size: 0.85rem;
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-card">
+        <div class="card-body">
+            <h2 class="card-title">Post New Announcement</h2>
+            <p class="card-subtitle-text">Share important updates with your users.</p>
+
+            {# Flash messages display area #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';" aria-label="Close">&times;</button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('admin_post_announcement') }}" method="POST">
+                <div class="form-group">
+                    <label for="title" class="form-label">Announcement Title:</label>
+                    <input type="text" class="form-control" id="title" name="title" required placeholder="Enter announcement title">
+                </div>
+                <div class="form-group">
+                    <label for="content" class="form-label">Announcement Content:</label>
+                    <textarea class="form-control" id="content" name="content" rows="8" required placeholder="Write your announcement here..."></textarea>
+                </div>
+                <div class="button-grid">
+                    <button type="submit" class="btn btn-primary">Post Announcement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h3 class="announcements-section-title">All Posted Announcements</h3>
+
+    {% if announcements %}
+        <div class="announcement-list-group">
+            {% for announcement in announcements %}
+            <div class="announcement-card">
+                <div class="announcement-card-body">
+                    <div class="announcement-card-header">
+                        <div>
+                            <h5 class="announcement-title">{{ announcement.title }}</h5>
+                            <h6 class="announcement-subtitle">Posted: {{ announcement.date_posted.strftime('%B %d, %Y at %I:%M %p') }}</h6>
+                        </div>
+                        <a href="{{ url_for('admin_delete_announcement', announcement_id=announcement.id) }}"
+                           class="btn-outline-danger-sm"
+                           onclick="return confirm('Are you sure you want to delete this announcement?');">
+                            Delete
+                        </a>
+                    </div>
+                    <p class="announcement-content">{{ announcement.content }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">No Announcements Posted Yet!</h4>
+            <p>Use the form above to add your first announcement.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

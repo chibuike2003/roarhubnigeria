@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <img src="{{ url_for('static', filename='profile_pics/' + user.profile_picture) }}" alt="Profile Picture" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                <h4>{{ user.full_name }}</h4>
+                <p class="text-muted">{{ user.email }}</p>
+                <a href="{{ url_for('edit_profile') }}" class="btn btn-primary btn-sm">Edit Profile</a>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                Recent Activity
+            </div>
+            <ul class="list-group list-group-flush">
+                {% if activities %}
+                    {% for activity in activities %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ activity.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+                            <p class="mb-0">{{ activity.description }}</p>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item text-center text-muted">No recent activity.</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2 class="mb-4">My Dashboard</h2>
+
+        {# Happy Birthday Message #}
+        {% if is_birthday %}
+            <div class="alert alert-success text-center border-0 shadow-sm p-4 mb-4" role="alert">
+                <h4 class="alert-heading">🎉 Happy Birthday, {{ user.full_name }}! 🎉</h4>
+                <p class="mb-0">You are now **{{ age }} years old**! We wish you a wonderful day filled with joy and happiness, we love you.</p>
+            </div>
+        {% endif %}
+
+        <div class="card mb-4">
+            <div class="card-header">
+                Quick Actions
+            </div>
+            <div class="card-body text-center">
+                <a href="{{ url_for('create_blog_post') }}" class="btn btn-info me-2">Create Blog Post</a>
+                <a href="{{ url_for('share_success_story') }}" class="btn btn-secondary">Share Success Story</a>
+            </div>
+        </div>
+        
+     
+{% endblock %}

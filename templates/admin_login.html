@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #A020F0; /* A vibrant purple */
+            --secondary-color: #6c757d; /* Muted grey */
+            --background-color: #f0f2f5; /* Light grey background */
+            --card-background: #ffffff; /* White card background */
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+            --input-border: #ced4da;
+            --input-focus-border: #80bdff;
+            --button-hover-bg: #8A1AC8; /* Darker purple for hover */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px; /* Adjust max-width for login form */
+            padding: 20px;
+        }
+
+        .login-card {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow-light);
+            padding: 40px;
+        }
+
+        .card-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px; /* Slightly rounded corners for inputs */
+            font-size: 1rem;
+            color: var(--text-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(160, 32, 240, 0.25); /* Focus ring matching primary color */
+            outline: none;
+        }
+
+        .button-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-danger { /* Used for login button as per original request, but styled with a bolder look */
+            background-color: var(--primary-color); /* Using primary color for consistency and modern look */
+            color: white;
+            box-shadow: 0 4px 10px var(--shadow-light);
+        }
+
+        .btn-danger:hover {
+            background-color: var(--button-hover-bg);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 25px;
+            }
+
+            .card-title {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="login-card">
+        <div class="card-body">
+            <h2 class="card-title">Administrator Login</h2>
+            <form action="{{ url_for('admin_login') }}" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="button-grid">
+                    <button type="submit" class="btn btn-danger">Login as Admin</button>
+                </div>
+            </form>
+        </div>
+         <div class="text-end mb-3">
+                    <a href="{{ url_for('forgot_password') }}" class="text-muted small text-decoration-none">Forgot Password?</a>
+                </div>
+    </div>
+</div>
+
+</body>
+</html>

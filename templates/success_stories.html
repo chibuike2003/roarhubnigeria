@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Success Stories{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="mb-4">Inspiring Success Stories</h2>
+        <p class="lead">Read about the triumphs and resilience of women in our community.</p>
+        <hr>
+        {% if stories %}
+            {% for story in stories %}
+            <article class="success-story card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">{{ story.title }}</h3>
+                    <p class="card-subtitle text-muted mb-2">
+                        Shared by {{ story.author.full_name }} on {{ story.date_posted.strftime('%B %d, %Y') }}
+                    </p>
+                    <div class="card-text">{{ story.content[:300] }}...</div>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                No success stories have been shared yet. Be the first to share yours!
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Share Your Story</h5>
+                <p class="card-text">Inspire others by sharing your personal journey and success story.</p>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('share_success_story') }}" class="btn btn-secondary w-100">Share Story</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-secondary w-100">Login to Share Story</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

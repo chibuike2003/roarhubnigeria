@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Announcements{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <h2 class="text-center text-primary mb-5 display-4 fw-bold">Latest Announcements</h2>
+
+            {% if announcements %}
+                {% for announcement in announcements %}
+                <div class="card shadow-sm mb-4 rounded-lg border-0">
+                    <div class="card-body p-4">
+                        <h5 class="card-title text-dark fw-bold mb-2">{{ announcement.title }}</h5>
+                        <h6 class="card-subtitle mb-3 text-muted">
+                            Posted by <span style="color: blue;">   admin {{ announcement.admin.username }}</span> on {{ announcement.date_posted.strftime('%B %d, %Y at %I:%M %p') }}
+                        </h6>
+                        <p class="card-text text-secondary lh-lg">{{ announcement.content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info text-center mt-5 p-4 rounded-lg shadow-sm" role="alert">
+                    <h4 class="alert-heading">No Announcements Yet!</h4>
+                    <p>It looks like there are no new announcements to display at the moment. Please check back later for updates.</p>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

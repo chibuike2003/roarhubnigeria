@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Upcoming Events{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="text-center text-primary mb-5 display-4 fw-bold">Upcoming Events</h2>
+
+            {# Flash messages display area #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if events %}
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for event in events %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm rounded-lg border-0">
+                            {# Filter for images and videos specifically #}
+                            {% set event_images = event.media | selectattr('file_type', '==', 'image') | list %}
+                            {% set event_videos = event.media | selectattr('file_type', '==', 'video') | list %}
+
+                            {% if event_images | length > 1 %}
+                                {# Carousel for multiple images #}
+                                <div id="carouselExampleIndicators{{ event.id }}" class="carousel slide rounded-top-lg" data-bs-ride="carousel">
+                                    <div class="carousel-indicators">
+                                        {% for image in event_images %}
+                                        <button type="button" data-bs-target="#carouselExampleIndicators{{ event.id }}" data-bs-slide-to="{{ loop.index0 }}" class="{{ 'active' if loop.first }}" aria-current="{{ 'true' if loop.first }}" aria-label="Slide {{ loop.index }}"></button>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="carousel-inner">
+                                        {% for image in event_images %}
+                                        <div class="carousel-item {{ 'active' if loop.first }}">
+                                            <img src="{{ url_for('static', filename='event_media/' + image.filename) }}" class="d-block w-100 rounded-top-lg" alt="{{ event.title }}" style="object-fit: cover; height: 200px;">
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators{{ event.id }}" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators{{ event.id }}" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            {% elif event_images | length == 1 %}
+                                {# Single image #}
+                                <img src="{{ url_for('static', filename='event_media/' + event_images[0].filename) }}" class="card-img-top img-fluid rounded-top-lg" alt="{{ event.title }}" style="object-fit: cover; height: 200px;">
+                            {% elif event_videos | length > 0 %}
+                                {# Single video (display first one if multiple) #}
+                                <video controls class="card-img-top rounded-top-lg" style="object-fit: cover; height: 200px;">
+                                    <source src="{{ url_for('static', filename='event_media/' + event_videos[0].filename) }}" type="video/{{ event_videos[0].filename.rsplit('.', 1)[1] }}">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% else %}
+                                {# No media #}
+                                <img src="https://placehold.co/600x400/87CEEB/FFFFFF?text=No+Media+Available" class="card-img-top img-fluid rounded-top-lg" alt="No media available" style="object-fit: cover; height: 200px;">
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-dark fw-bold mb-2">{{ event.title }}</h5>
+                                <p class="card-text text-muted small mb-2">
+                                    <i class="fas fa-calendar-alt"></i> {{ event.event_date.strftime('%B %d, %Y') }} at {{ event.event_date.strftime('%I:%M %p') }}
+                                </p>
+                                <p class="card-text text-muted small mb-3">
+                                    <i class="fas fa-map-marker-alt"></i> {{ event.location }}
+                                </p>
+                                <p class="card-text text-secondary lh-base flex-grow-1">{{ event.description }}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 pt-0 pb-3 text-center">
+                                {# Share Button #}
+                                <button type="button" class="btn btn-outline-info btn-sm rounded-pill px-3"
+                                        onclick="shareEvent('{{ event.title | e }}', '{{ event.description | e }}', window.location.origin + '{{ url_for('user_events') }}');">
+                                    <i class="fas fa-share-alt me-1"></i> Share Event
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center mt-5 p-4 rounded-lg shadow-sm" role="alert">
+                    <h4 class="alert-heading">No Upcoming Events!</h4>
+                    <p>Check back later for exciting new events.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function shareEvent(title, description, url) {
+        // Use Web Share API if available
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: description,
+                url: url
+            }).then(() => {
+                console.log('Event shared successfully!');
+            }).catch((error) => {
+                console.error('Error sharing event:', error);
+                // Fallback to copy to clipboard if share fails or is cancelled
+                copyToClipboard(url, title);
+            });
+        } else {
+            // Fallback for browsers that do not support Web Share API
+            copyToClipboard(url, title);
+        }
+    }
+
+    function copyToClipboard(text, title) {
+        // Create a temporary textarea element
+        const textarea = document.createElement('textarea');
+        textarea.value = `Check out this event: ${title} - ${text}`;
+        textarea.style.position = 'fixed'; // Prevent scrolling to bottom of page
+        textarea.style.opacity = 0; // Hide the textarea
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+            const successful = document.execCommand('copy');
+            const message = successful ? 'Event link copied to clipboard!' : 'Failed to copy link.';
+            alert(message); // Using alert for simplicity, consider a custom modal in production
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+            alert('Could not copy link to clipboard. Please copy manually: ' + text);
+        } finally {
+            document.body.removeChild(textarea); // Clean up the temporary element
+        }
+    }
+</script>
+{% endblock %}

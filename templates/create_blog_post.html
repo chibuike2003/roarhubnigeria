@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Blog Post{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Create a New Blog Post</h2>
+                <form action="{{ url_for('create_blog_post') }}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Post Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Add an Image (optional)</label>
+                        <input class="form-control" type="file" id="image" name="image" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label for="video" class="form-label">Add a Video (optional)</label>
+                        <input class="form-control" type="file" id="video" name="video" accept="video/mp4,video/webm,video/ogg">
+                    </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">Submit Post for Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

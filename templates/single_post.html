@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <article class="blog-post">
+            <h1 class="mb-3">{{ post.title }}</h1>
+            <p class="text-muted">
+                By {{ post.author.full_name }} on {{ post.date_posted.strftime('%B %d, %Y') }}
+            </p>
+            <hr>
+            {% if post.image_filename %}
+                <img src="{{ url_for('static', filename='blog_media/' + post.image_filename) }}" class="img-fluid rounded mb-4" alt="Blog Post Image">
+            {% endif %}
+            {% if post.video_filename %}
+                <video controls class="img-fluid rounded mb-4">
+                    <source src="{{ url_for('static', filename='blog_media/' + post.video_filename) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            {% endif %}
+            <div class="post-content">
+                {{ post.content | safe }}
+            </div>
+        </article>
+
+        <div class="card mt-5">
+            <div class="card-header">
+                <h4>Comments ({{ post.comments|length }})</h4>
+            </div>
+            <div class="card-body">
+                {% if current_user.is_authenticated %}
+                <form action="{{ url_for('add_comment', post_id=post.id) }}" method="POST" class="mb-4">
+                    <div class="mb-3">
+                        <textarea class="form-control" name="content" rows="3" placeholder="Write a comment..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                </form>
+                {% else %}
+                <div class="alert alert-warning" role="alert">
+                    <a href="{{ url_for('login') }}" class="alert-link">Log in</a> to leave a comment.
+                </div>
+                {% endif %}
+
+                <div class="comments-section">
+                    {% for comment in post.comments %}
+                    <div class="comment-item mb-3 p-3 border rounded">
+                        <p class="mb-0 fw-bold">{{ comment.author.full_name }}</p>
+                        <p class="text-muted small">{{ comment.date_posted.strftime('%B %d, %Y at %H:%M') }}</p>
+                        <p class="mb-0">{{ comment.content }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
